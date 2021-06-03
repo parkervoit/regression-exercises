@@ -42,10 +42,6 @@ def wrangle_telco(db_name = 'telco_db', username = env.username, password = env.
     filename = 'telco.csv'
     if os.path.isfile(filename):
         telco_df = pd.read_csv(filename, index_col=0)
-        telco_df = telco_df[telco_df['contract_type_id']== 3]
-        telco_df = telco_df[['customer_id','monthly_charges','tenure','total_charges']]
-        telco_df['total_charges'] = telco_df.total_charges.str.replace(' ','0.00').astype('float64')
-        telco_df.tenure = telco_df.tenure.astype('float64')
         return telco_df
     else:
         telco_df = pd.read_sql('''SELECT * FROM customers 
@@ -53,11 +49,11 @@ def wrangle_telco(db_name = 'telco_db', username = env.username, password = env.
                           JOIN contract_types USING(contract_type_id)
                           JOIN payment_types USING (payment_type_id);''',
                         get_connection('telco_churn'))
-        telco_df.to_csv(filename)
         telco_df = telco_df[telco_df['contract_type_id']== 3]
         telco_df = telco_df[['customer_id','monthly_charges','tenure','total_charges']]
         telco_df['total_charges'] = telco_df.total_charges.str.replace(' ','0.00').astype('float64')
         telco_df.tenure = telco_df.tenure.astype('float64')
+        telco_df.to_csv(filename)
         return telco_df
     
 def wrangle_zillow(db_name = 'zillow', username = env.username, password = env.password, host = env.host):
