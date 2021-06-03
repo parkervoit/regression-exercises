@@ -24,3 +24,20 @@ def get_telco_db(db_name, username = env.username, password = env.password, host
                         get_connection('telco_churn'))
         telco_df.to_csv(filename)
         return telco_df
+    
+def get_zillow_db(db_name = 'zillow', username = env.username, password = env.password, host = env.host):
+    '''
+    Imports single residential family properties from the zillow database. columns are bedroom/bathroom counts,
+    square footage, tax value, year it was built, tax, and fips for the year 2017'''
+    filename = 'zillow.csv'
+    if os.path.isfile(filename):
+        zillow_df = pd.read_csv(filename, index_col=0)
+        return zillow_df
+    else:
+        zillow_df = pd.read_sql('''SELECT bedroomcnt, bathroomcnt, calculatedfinishedsquarefeet, 
+                                          taxvaluedollarcnt, yearbuilt, taxamount, fips 
+                                          FROM properties_2017
+                                          WHERE propertylandusetypeid = 261;''',
+                        get_connection('zillow'))
+        zillow_df.to_csv(filename)
+        return zillow_df
