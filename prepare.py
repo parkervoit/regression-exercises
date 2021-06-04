@@ -21,12 +21,35 @@ def train_validate_test_split(df, seed=123):
                                        random_state=seed)
     return train, validate, test
     
-def minmax_scale(data_set):
+def minmax_scale(data_set, column_names):
     '''
     Takes in the dataframe and applies a minmax scaler to it. Can pass a dataframe slice, 
-    needs to be numbers. Outputs a scaled dataframe. You will need to rename columns after. 
+    needs to be numbers. Also takes a list of columns to rename output. Outputs a scaled dataframe.  
     '''
     scaler = sklearn.preprocessing.MinMaxScaler()
     x_scaled = scaler.fit_transform(data_set)
     x_scaled = pd.DataFrame(x_scaled)
+    x_scaled.columns = column_names
+    return x_scaled
+
+def std_scale(data_set, column_names):
+    '''
+    Takes in the dataframe and applies a standard scaler to it. Can pass a dataframe slice, 
+    needs to be numbers. Also takes a list of columns to rename output. Outputs a scaled dataframe.  
+    '''
+    scaler = sklearn.preprocessing.StandardScaler()
+    x_scaled = scaler.fit_transform(data_set)
+    x_scaled = pd.DataFrame(x_scaled)
+    x_scaled.columns = column_names
+    return x_scaled
+
+def robust_scale(data_set, column_names):
+    '''
+    Takes in the dataframe and applies a robust scaler to it. Can pass a dataframe slice, 
+    needs to be numbers. Also takes a list of columns to rename output. Outputs a scaled dataframe.  
+    '''
+    scaler = sklearn.preprocessing.RobustScaler()
+    x_scaled = scaler.fit_transform(data_set)
+    x_scaled = pd.DataFrame(x_scaled)
+    x_scaled.columns = column_names
     return x_scaled
