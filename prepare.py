@@ -53,3 +53,13 @@ def robust_scale(data_set):
     x_scaled = pd.DataFrame(x_scaled)
     x_scaled.columns = data_set.columns
     return x_scaled
+
+def quant_transformer(data_set, output_dist = 'normal'):
+    """
+    Takes in a dataframe and applies a quantile transormer to it. Defau
+    Returns a transformed dataframe with renamed columns. Defalt distribution is normal, but can pass uniform for a uniform distribution"""
+    qt = sklearn.preprocessing.QuantileTransformer(output_distribution = output_dist)
+    x_scaled = qt.fit_transform(data_set)
+    x_scaled = pd.DataFrame(x_scaled)
+    x_scaled.columns = data_set.columns
+    return x_scaled
