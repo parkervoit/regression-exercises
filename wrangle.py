@@ -53,7 +53,7 @@ def wrangle_telco(db_name = 'telco_db', username = env.username, password = env.
                           JOIN payment_types USING (payment_type_id);''',
                         get_connection('telco_churn'))
         telco_df = telco_df[telco_df['contract_type_id']== 3]
-        telco_df = telco_df[['customer_id','monthly_charges','tenure','total_charges']]
+        telco_df = telco_df[['customer_id','monthly_charges','tenure','total_charges','churn']]
         telco_df['total_charges'] = telco_df.total_charges.str.replace(' ','0.00').astype('float64')
         telco_df.tenure = telco_df.tenure.astype('float64')
         telco_df.to_csv(filename)
@@ -77,4 +77,22 @@ def wrangle_zillow(db_name = 'zillow', username = env.username, password = env.p
         zillow_df = zillow_df.drop_duplicates()
         zillow_df.to_csv('zillow.csv')
         return zillow_df 
+    
+def wrangle_mall(db_name = 'mall_customers', username = env.username, password = env.password, host = env.host):
+    ''' 
+    Checks for zillow.csv file and imports it if present. If absent, it will pull in bedroom bathroom counts, sq ft.
+    tax value dollar count, year built, tax amount, and fips from properties 2017 in the zillow database. Then it will drop
+    nulls and drop duplicates'''
+    filename = 'mall.csv'
+    if os.path.isfile(filename):
+        mall_df = pd.read_csv(filename, index_col=0)
+        return mall_df
+    else:
+        zillow_df = pd.read_sql('''SELECT * FROM customers''', get_connection('mall_customers'))
+        zillow_df = zillow_df.dropna()
+        zillow_df = zillow_df.drop_duplicates()
+        zillow_df.to_csv('mall.csv')
+        return zillow_df 
+
+
 

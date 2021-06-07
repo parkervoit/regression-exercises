@@ -63,3 +63,8 @@ def quant_transformer(data_set, output_dist = 'normal'):
     x_scaled = pd.DataFrame(x_scaled)
     x_scaled.columns = data_set.columns
     return x_scaled
+
+def months_to_years(data_set):
+    data_set['tenure_years'] = round(data_set.tenure / 12, 0)
+    data_set = data_set.rename(columns={'tenure': 'tenure_month'})
+    return data_set
