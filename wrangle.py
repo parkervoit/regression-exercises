@@ -80,19 +80,18 @@ def wrangle_zillow(db_name = 'zillow', username = env.username, password = env.p
     
 def wrangle_mall(db_name = 'mall_customers', username = env.username, password = env.password, host = env.host):
     ''' 
-    Checks for zillow.csv file and imports it if present. If absent, it will pull in bedroom bathroom counts, sq ft.
-    tax value dollar count, year built, tax amount, and fips from properties 2017 in the zillow database. Then it will drop
+    Checks for mall.csv file and imports it if present. If absent, pulls all columns from customers. Then it will drop
     nulls and drop duplicates'''
     filename = 'mall.csv'
     if os.path.isfile(filename):
         mall_df = pd.read_csv(filename, index_col=0)
         return mall_df
     else:
-        zillow_df = pd.read_sql('''SELECT * FROM customers''', get_connection('mall_customers'))
-        zillow_df = zillow_df.dropna()
-        zillow_df = zillow_df.drop_duplicates()
-        zillow_df.to_csv('mall.csv')
-        return zillow_df 
+        mall_df = pd.read_sql('''SELECT * FROM customers''', get_connection('mall_customers'))
+        mall_df = mall_df.dropna()
+        mall_df = mall_df.drop_duplicates()
+        mall_df.to_csv('mall.csv')
+        return  mall_df 
 
 
 
