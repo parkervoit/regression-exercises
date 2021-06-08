@@ -4,24 +4,29 @@ from math import sqrt
 import numpy as np
 import pandas as pd
 
-def plot_res(actual, baseline, predicted):
-    '''plot_res(actual, baseline, predicted)
+def plot_res(actual, predicted):
+    '''plot_res(actual, predicted)
     Takes in actual values, baseline values, and predicted values.
     Returns scatterplots comparing baseline and predicted residuals to actual'''
+    # save residuals and create baseline
+    baseline = actual.mean()
     res = predicted - actual
     base_res = baseline - actual
+    #create figure and subplots
     plt.figure(figsize=(20,9))
+    # actual v model
     plt.subplot(121)
     plt.hlines(0, actual.min(), actual.max(), ls=':')
     plt.scatter(actual, res)
-    plt.ylim(-5,5)
+    plt.ylim(res.min(),res.max())
     plt.ylabel('residual ($model_y - \hat{y}$)')
     plt.xlabel('actual value ($y$)')
     plt.title('Actual vs Model Residual')
+    # actual v baseline
     plt.subplot(122)
     plt.hlines(0, actual.min(), actual.max(), ls=':')
     plt.scatter(actual, base_res)
-    plt.ylim(-5,5)
+    plt.ylim(base_res.min(), base_res.max())
     plt.ylabel('residual ($baseline_y - \hat{y}$)')
     plt.xlabel('actual value ($y$)')
     plt.title('Actual vs Baseline Residual')
