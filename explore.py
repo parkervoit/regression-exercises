@@ -39,9 +39,7 @@ def select_kbest(X, y, stats = f_regression, k = 3):
             new_feat.append(feature)
     return print('The best features are:{}'.format(new_feat))
 
-def rfe(X,y, k = 3):
-    '''rfe(X,y, k = 3)
-    returns a list of best features according to rfe'''
+def rfe(X,y, k = 2, rankings = False):
     lm = LinearRegression()
     rfe = RFE(lm, k)
     X_rfe = rfe.fit_transform(X, y)
@@ -50,4 +48,8 @@ def rfe(X,y, k = 3):
     for bool, feature in zip(mask, X.columns):
         if bool:
             new_feat.append(feature)
-    return print('The best features are:{}'.format(new_feat))
+    if rankings:
+        rankings = pd.Series(dict(zip(X.columns, rfe.ranking_)))
+        return rankings
+    else:
+        return print(f'Best features are {new_feat}')
