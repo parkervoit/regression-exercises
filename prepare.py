@@ -21,16 +21,25 @@ def train_validate_test_split(df, seed=123):
                                        random_state=seed)
     return train, validate, test
     
-def minmax_scale(data_set):
+def minmax_scale(data_set, X_train):
     '''
+    minmax_scale(data_set, X_train)
     Takes in the dataframe and applies a minmax scaler to it. Can pass a dataframe slice, 
     needs to be numbers. Outputs a scaled dataframe.  
     '''
-    scaler = sklearn.preprocessing.MinMaxScaler()
-    x_scaled = scaler.fit_transform(data_set)
+    scaler = sklearn.preprocessing.MinMaxScaler().fit(X_train)
+    x_scaled = scaler.transform(data_set)
     x_scaled = pd.DataFrame(x_scaled)
     x_scaled.columns = data_set.columns
     return x_scaled
+
+    scaler = MinMaxScaler(copy=True).fit(X_train[numeric_cols])
+
+    # scale X_train, X_validate, X_test using the mins and maxes stored in the scaler derived from X_train.
+    #
+    X_train_scaled_array = scaler.transform(X_train[numeric_cols])
+    X_validate_scaled_array = scaler.transform(X_validate[numeric_cols])
+    X_test_scaled_array = scaler.transform(X_test[numeric_cols])
 
 def std_scale(data_set):
     '''

@@ -16,10 +16,10 @@ def plot_variable_pairs(data_set, target):
 def plot_categorical_and_continuous_vars(data_set, cat_var, con_var):
     '''plot_categorical_and_continuous_vars(data_set, cat_var, con_var)
     returns a barplot, violinplot, and boxplot of the continuous and categorical variables'''
-    return (sns.barplot(data = data_set, y = con_var, x = cat_var)
-            plt.show()
-            sns.violinplot(data = data_set, y = con_var, x = cat_var)
-            plt.show()
+    return (sns.barplot(data = data_set, y = con_var, x = cat_var),
+            plt.show(),
+            sns.violinplot(data = data_set, y = con_var, x = cat_var),
+            plt.show(),
             sns.boxplot(data = data_set, y = con_var, x = cat_var))
 
 def heat_corr(data_set):
