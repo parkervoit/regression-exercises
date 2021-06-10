@@ -78,3 +78,22 @@ def months_to_years(data_set):
     data_set = data_set.rename(columns={'tenure': 'tenure_month'})
     return data_set
 
+def create_dummies(df, object_cols):
+    """
+    This function takes in a dataframe and list of object column names,
+    and creates dummy variables of each of those columns.
+    It then appends the dummy variables to the original dataframe.
+    It returns the original df with the appended dummy variables.
+    """
+
+    # run pd.get_dummies() to create dummy vars for the object columns.
+    # we will drop the column representing the first unique value of each variable
+    # we will opt to not create na columns for each variable with missing values
+    # (all missing values have been removed.)
+    dummy_df = pd.get_dummies(object_cols, dummy_na=False, drop_first=True)
+
+    # concatenate the dataframe with dummies to our original dataframe
+    # via column (axis=1)
+    df = pd.concat([df, dummy_df], axis=1)
+
+    return df
